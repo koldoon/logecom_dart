@@ -1,18 +1,17 @@
 name: logecom
 description: Universal logger and logging pipeline
 version: 0.0.1
-homepage: ''
+homepage: 'https://github.com/koldoon/logecom-dart'
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
-  flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  intl:
-  duration:
+  intl: ^0.17.0
+  duration: ^3.0.8
 
 dev_dependencies:
   flutter_test:
