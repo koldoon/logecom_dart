@@ -1,4 +1,6 @@
-__Logecom__ is simple yet powerful middleware-based logging utility inspired by Nodejs Express library.
+__Logecom__ is simple yet powerful and elegant middleware-based logging utility inspired by Nodejs Express library.
+
+![Output example](screenshot.png)
 
 ## Motivation
 
@@ -7,7 +9,7 @@ particular logger is initialized or used.
 
 The idea is to abstract from logging process as much as possible and to define simple common interface with minimal overhead and give a stack to implement any logging pipeline with desired functionality in single place.
 
-Bascally there is the only interface introduced for any log processing: `LogTranslator`
+Basically there is the only interface introduced for any log processing: `LogTranslator`
 
 By implementing it in different ways it is possible to achieve any result. You can transform, format, collect, print or send, and even use another logger! - anything you want inside the pipeline.
 
@@ -16,16 +18,13 @@ Implementing `LogTranslator` by `Logecom` itself makes it possible to create com
 
 ## Features
 
-There are several `LogTranslator` implementations available "out of the box" covering the most common logging usecases:
+There are several `LogTranslator` implementations available "out of the box" covering the most common logging use cases:
 - `HttpFormatter` - Allows to log HTTP interaction easily
 - `ConsoleTransport` - Default console printer. Provide simple and compact log entries formatting with different ways of printing: using `stdout`, `stderr`, `developer.log()` or `print()` methods
 
-Output example:
-![screenshot](screenshot.png)
-
 ## Getting started
 
-To start using Logecom logger first you need to configure a desired pipeline. By default there is no any configuration.  Typically in addition to simple textual events you would likely to want at least to find and foramt HTTP log entries and catch all unhandled errors. For Flutter application this configuration may look like this:
+To start using Logecom logger first you need to configure a desired pipeline. By default there is no any configuration.  Typically in addition to simple textual events you would likely to want at least to find and format HTTP log entries and catch all unhandled errors. For Flutter application this configuration may look like this:
 
 ```dart
 void main() {

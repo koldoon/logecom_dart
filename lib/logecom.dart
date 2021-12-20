@@ -54,8 +54,7 @@ class Logecom implements LogTranslator {
   static Logger createLogger(dynamic category) {
     if (category is String) return Logger(category, instance);
     if (category is Type) return Logger(category.toString(), instance);
-    if (category is Object) return Logger(category.runtimeType.toString(), instance);
-    return Logger('Global', instance);
+    return Logger(category.runtimeType.toString(), instance);
   }
 
   /// Configure default Logecom instance.
