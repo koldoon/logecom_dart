@@ -38,18 +38,17 @@ import 'log_translator.dart';
 /// up to another (conditionally, for example) if needed ;)
 ///
 class Logecom implements LogTranslator {
-  static final instance = Logecom();
+  static Logecom? _instance;
+  static Logecom get instance => _instance ??= Logecom();
 
   /// Create Logger instance for specified category.
   /// Common pattern is to use class name as a category specifier:
   ///
-  /// `private readonly logger = Logecom.createLogger('CategoryOrClassName');`
+  ///   `private readonly logger = Logecom.createLogger('CategoryOrClassName');`
   ///
   /// or even simply this way:
   ///
-  /// `private readonly logger = Logecom.createLogger(this);`
-  ///
-  /// If no category passed, the `Global` name will be used.
+  ///   `private readonly logger = Logecom.createLogger(ClassName);`
   ///
   static Logger createLogger(dynamic category) {
     if (category is String) return Logger(category, instance);
@@ -57,35 +56,18 @@ class Logecom implements LogTranslator {
     return Logger(category.runtimeType.toString(), instance);
   }
 
-  /// Configure default Logecom instance.
-  /// For the global logging system it's ok to use Singleton pattern ;)
-  ///
-  /// To prevent possible duplicates during re-configuration by mistake,
-  /// this method always configure default Logecom instance "from scratch",
-  /// removing all existing middleware.
-  ///
-  static Logecom configure() {
-    instance._pipe = [];
-    return instance;
-  }
-
-  Logecom use(LogTranslator translator) {
-    _pipe.add(translator);
-    return this;
-  }
-
   @override
   void translate(LogEntry entry, LogTranslatorNextFunction? next) {
-    if (_pipe.isEmpty) return;
+    if (pipeline.isEmpty) return;
     _getNextFunction(0)(entry);
   }
 
-  List<LogTranslator> _pipe = [];
+  List<LogTranslator> pipeline = [];
 
   LogTranslatorNextFunction _getNextFunction(int i) {
     return (LogEntry entry) {
-      if (i >= _pipe.length) return;
-      _pipe[i].translate(entry, _getNextFunction(i + 1));
+      if (i >= pipeline.length) return;
+      pipeline[i].translate(entry, _getNextFunction(i + 1));
     };
   }
 }

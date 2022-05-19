@@ -1,5 +1,4 @@
 /// Collection of simple string decorators for colorful console messages
-///
 abstract class ANSIPainter {
   static String black(String s) => '\x1B[30m$s\x1B[0m';
   static String red(String s) => '\x1B[31m$s\x1B[0m';

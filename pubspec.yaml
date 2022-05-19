@@ -1,17 +1,14 @@
 name: logecom
-description: Simple yet powerful logger API and middleware-based logging pipeline.
+description: Simple yet powerful logger and middleware-based logging pipeline.
 version: 0.0.4
 homepage: 'https://github.com/koldoon/logecom-dart'
 
 environment:
-  sdk: ">=2.13.0 <3.0.0"
+  sdk: '>=2.13.0 <3.0.0'
 
 dependencies:
   intl: ^0.17.0
-  duration: ^3.0.8
+  duration: ^3.0.11
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^1.0.4
   dartdoc:

@@ -10,14 +10,14 @@ import 'package:logecom/translator/string_mapper.dart';
 
 /// Formats log entries with [HttpLogContext] inside.
 ///
-/// [printRpcContent] - Try to format and print [responseData] and [requestData] available in
-/// [HttpLogContext] object. If you are not interested in specific data but want to see registered
-/// events - set to `false`
-/// [colorize] - Use special ANSI sequences for colorful output. Warning: not all consoles support
-/// this feature. For example, XCode debug console will print this sequences "as is" so the output
-/// will be "dirty". Use with care.
-/// [hideAuthData] - If `true`, will parse the headers provided and avoid printing the content of
-/// `Authorization` header.
+///  * [printRpcContent] Try to format and print [responseData] and [requestData] available
+///    in [HttpLogContext] object. If you are not interested in specific data but want to see
+///    registered events - set to `false`
+///  * [colorize] Use special ANSI sequences for colorful output. Warning: not all consoles support
+///    this feature. For example, XCode debug console will print this sequences "as is" so the output
+///    will be "dirty". Use with care.
+///  * [hideAuthData] If `true`, will parse the headers provided and avoid printing the content of
+///    `Authorization` header.
 class HttpFormatter implements LogTranslator {
   HttpFormatter({bool colorize = true, this.printRpcContent = false, this.hideAuthData = true}) {
     if (colorize) {

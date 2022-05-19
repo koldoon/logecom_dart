@@ -13,3 +13,7 @@
 ## 0.0.4
 
 * Make README more representative  
+
+## 0.0.5
+
+* Changed configuration API: replace `use()` method with simple `List pipeline` property   
