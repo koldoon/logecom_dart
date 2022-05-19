@@ -24,25 +24,31 @@ There are several `LogTranslator` implementations available "out of the box" cov
 
 ## Getting started
 
-To start using Logecom logger first you need to configure a desired pipeline. By default there is no any configuration.  Typically in addition to simple textual events you would likely to want at least to find and format HTTP log entries and catch all unhandled errors. For Flutter application this configuration may look like this:
+To start using Logecom logger first you need to configure a desired pipeline.
+By default there is no any configuration. Typically in addition to simple textual
+events you would likely to want at least to find and format HTTP log entries and
+catch all unhandled errors.
+
+For Flutter application this configuration may look like this:
 
 ```dart
 void main() {
   final method = PrintingMethod.stdErr;
 
   // typical logging pipeline
-  Logecom.configure()
-      .use(HttpFormatter(
+  Logecom.instance.pipeline = [
+      HttpFormatter(
         printRpcContent: config.logPrintRpcContent,
         hideAuthData: config.logHideAuthData,
         colorize: method == PrintingMethod.stdErr || method == PrintingMethod.stdOut,
-      ))
-      .use(ConsoleTransport(
+      ),
+      ConsoleTransport(
         config: ConsoleTransportConfig(
           printingMethod: method,
           timestampFormat: method == PrintingMethod.print ? '' : 'yyyy-mm-dd HH:MM:ss.S',
         ),
-      ));
+      ),
+  ];
 
   // this logger us used to specify uncategorized (Global) events
   final logger = Logecom.createLogger('Global');
@@ -54,6 +60,12 @@ void main() {
   void onUnhandledException(Object error, StackTrace stack) {
     logger.error('Unhandled Exception', [error, '\n$stack']);
   }
+
+  Isolate.current.addErrorListener(RawReceivePort((List<dynamic> pair) async {
+    final error = pair.first;
+    final StackTrace stack = pair.last;
+    logger.error('Unhandled Isolate Error', [error, '\n$stack']);
+  }).sendPort);
 
   /// all application code must be inside this function
   /// to handle ALL errors properly
