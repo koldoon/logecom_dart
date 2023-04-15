@@ -17,3 +17,7 @@
 ## 0.0.5
 
 * Changed configuration API: replace `use()` method with simple `List pipeline` property   
+
+## 0.0.6
+
+* Fix default console timestamp formatter   

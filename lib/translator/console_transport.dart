@@ -15,7 +15,7 @@ class ConsoleTransportConfig {
     this.diffTime = false,
     this.alignMessages = false,
     this.initialAlignmentValue = 0,
-    this.timestampFormat = 'yyyy-mm-dd HH:MM:ss.S',
+    this.timestampFormat = 'yyyy-MM-dd HH:mm:ss.S',
     this.printingMethod = PrintingMethod.stdErr,
     this.colorize = true,
   });
