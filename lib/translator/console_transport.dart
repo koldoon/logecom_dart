@@ -4,64 +4,54 @@ import 'dart:math';
 
 import 'package:duration/duration.dart';
 import 'package:intl/intl.dart';
-import 'package:logecom/ansi_painter.dart';
 import 'package:logecom/log_entry.dart';
 import 'package:logecom/log_level.dart';
 import 'package:logecom/log_translator.dart';
+import 'package:logecom/painter.dart';
 import 'package:logecom/translator/string_mapper.dart';
 
-class ConsoleTransportConfig {
-  const ConsoleTransportConfig({
+class ConsoleTransport implements LogTranslator {
+  ConsoleTransport({
     this.diffTime = false,
     this.alignMessages = false,
     this.initialAlignmentValue = 0,
     this.timestampFormat = 'yyyy-MM-dd HH:mm:ss.S',
-    this.printingMethod = PrintingMethod.stdErr,
-    this.colorize = true,
-  });
-
-  /// Print diff time between logs entries of the same category
-  final bool diffTime;
-  final bool colorize;
-  final bool alignMessages;
-  final int initialAlignmentValue;
-  final String timestampFormat;
-  final PrintingMethod printingMethod;
-}
-
-class ConsoleTransport implements LogTranslator {
-  ConsoleTransport({this.config = const ConsoleTransportConfig()}) {
-    if (config.printingMethod == PrintingMethod.stdOut) {
+    this.printingMethod = PrintingMethod.print,
+    this.textPainter = const UtfPainter(),
+  }) {
+    if (printingMethod == PrintingMethod.stdOut) {
       _printer = (line) => stdout.writeln(line);
-    } else if (config.printingMethod == PrintingMethod.stdErr) {
+    } else if (printingMethod == PrintingMethod.stdErr) {
       _printer = (line) => stderr.writeln(line);
-    } else if (config.printingMethod == PrintingMethod.developerLog) {
+    } else if (printingMethod == PrintingMethod.developerLog) {
       _printer = (line) {
         final parts = line.split(' ');
         developer.log(parts.skip(2).join(' '), name: parts[1]);
       };
-    } else if (config.printingMethod == PrintingMethod.print) {
-      _printer = (line) => print(line); // ignore: avoid_print
+    } else if (printingMethod == PrintingMethod.print) {
+      _printer = (line) => print(line.replaceAll('\x1B', '\u001B')); // ignore: avoid_print
     }
 
-    if (config.colorize &&
-        config.printingMethod != PrintingMethod.developerLog &&
-        config.printingMethod != PrintingMethod.print) {
-      _levelColor[LogLevel.warn] = ANSIPainter.yellow;
-      _levelColor[LogLevel.info] = ANSIPainter.green;
-      _levelColor[LogLevel.fatal] = ANSIPainter.red;
-      _levelColor[LogLevel.error] = ANSIPainter.red;
-      _levelColor[LogLevel.debug] = ANSIPainter.cyan;
-      _levelColor[LogLevel.log] = ANSIPainter.white;
-      _lgp = ANSIPainter.gray;
-      _gp = ANSIPainter.white;
-    }
+    _levelColor[LogLevel.warn] = textPainter.yellow;
+    _levelColor[LogLevel.info] = textPainter.green;
+    _levelColor[LogLevel.fatal] = textPainter.red;
+    _levelColor[LogLevel.error] = textPainter.red;
+    _levelColor[LogLevel.debug] = textPainter.cyan;
+    _levelColor[LogLevel.log] = textPainter.white;
+    _lgp = textPainter.gray;
+    _gp = textPainter.white;
 
-    _timestampFormatter = DateFormat(config.timestampFormat);
-    _categoryMaxLength = config.initialAlignmentValue;
+    _timestampFormatter = DateFormat(timestampFormat);
+    _categoryMaxLength = initialAlignmentValue;
   }
 
-  final ConsoleTransportConfig config;
+  final bool diffTime;
+  final TextPainter textPainter;
+  final bool alignMessages;
+  final int initialAlignmentValue;
+  final String timestampFormat;
+  final PrintingMethod printingMethod;
+
   late final DateFormat _timestampFormatter;
   LinePrinter _printer = dummyStringMapper;
   StringMapper _lgp = dummyStringMapper; // light gray painter
@@ -87,7 +77,7 @@ class ConsoleTransport implements LogTranslator {
     final logLevel = _lgp('[') + logLevelPainter(levelLabel) + _lgp(']');
 
     var category = entry.category;
-    if (config.diffTime) {
+    if (diffTime) {
       final lastTime = _categoryLastTime[entry.category] ?? now;
       final duration = prettyDuration(
         now.difference(lastTime),
@@ -97,19 +87,19 @@ class ConsoleTransport implements LogTranslator {
       category += ' +$duration';
       _categoryLastTime[entry.category] = now;
     }
-    if (config.alignMessages) {
+    if (alignMessages) {
       _categoryMaxLength = max(_categoryMaxLength, category.length);
       category = category.padRight(_categoryMaxLength);
     }
-    if (!config.colorize) {
+    if (textPainter is NoColorsTextPainter) {
       category += ' -';
     }
     category = _gp(category);
 
     var dateTime = _timestampFormatter.format(now);
-    if (config.timestampFormat.contains('.S')) {
+    if (timestampFormat.contains('.S')) {
       // dim microseconds
-      dateTime = dateTime.replaceAllMapped(RegExp(r'\.\d{3,3}'), (match) {
+      dateTime = dateTime.replaceAllMapped(RegExp(r'\.\d{3}'), (match) {
         return _lgp(match.group(0)!);
       });
     }

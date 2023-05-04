@@ -21,3 +21,9 @@
 ## 0.0.6
 
 * Fix default console timestamp formatter   
+
+## 0.0.7
+
+* [^] Better ConsoleTransport configuration API
+* [^] Use [print] method by default together with colors formatting based on UTF char codes
+* [+] Usage example 

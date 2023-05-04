@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:duration/duration.dart';
-import 'package:logecom/ansi_painter.dart';
 import 'package:logecom/log_entry.dart';
 import 'package:logecom/log_translator.dart';
+import 'package:logecom/painter.dart';
 import 'package:logecom/translator/http_log_entry.dart';
 import 'package:logecom/translator/string_mapper.dart';
 
@@ -19,13 +19,15 @@ import 'package:logecom/translator/string_mapper.dart';
 ///  * [hideAuthData] If `true`, will parse the headers provided and avoid printing the content of
 ///    `Authorization` header.
 class HttpFormatter implements LogTranslator {
-  HttpFormatter({bool colorize = true, this.printRpcContent = false, this.hideAuthData = true}) {
-    if (colorize) {
-      _gp = ANSIPainter.gray;
-      _gp2 = ANSIPainter.white;
-      _rsp = ANSIPainter.yellow;
-      _erp = ANSIPainter.red;
-    }
+  HttpFormatter({
+    TextPainter textPainter = const UtfPainter(),
+    this.printRpcContent = false,
+    this.hideAuthData = true,
+  }) {
+    _gp = textPainter.gray;
+    _gp2 = textPainter.white;
+    _rsp = textPainter.yellow;
+    _erp = textPainter.red;
   }
 
   final bool printRpcContent;
@@ -39,7 +41,9 @@ class HttpFormatter implements LogTranslator {
 
   @override
   void translate(LogEntry entry, LogTranslatorNextFunction? next) {
-    if (entry.context.isNotEmpty && entry.context.first is! HttpLogContext || entry.context.isEmpty || next == null) {
+    if (entry.context.isNotEmpty && entry.context.first is! HttpLogContext ||
+        entry.context.isEmpty ||
+        next == null) {
       if (next != null) next(entry);
       return;
     }

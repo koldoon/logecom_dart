@@ -12,3 +12,4 @@ dependencies:
 
 dev_dependencies:
   dartdoc:
+  lints: ^2.0.1
