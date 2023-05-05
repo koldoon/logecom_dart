@@ -5,6 +5,8 @@ import 'package:logecom/logger.dart';
 
 import 'log_translator.dart';
 
+export 'package:logecom/painter.dart';
+
 export 'log_level.dart';
 export 'log_translator.dart';
 export 'logger.dart';

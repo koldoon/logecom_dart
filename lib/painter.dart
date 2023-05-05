@@ -1,4 +1,4 @@
-abstract class TextPainter {
+abstract class LogecomTextPainter {
   String black(String s);
   String red(String s);
   String green(String s);
@@ -10,7 +10,7 @@ abstract class TextPainter {
   String gray(String s);
 }
 
-class NoColorsTextPainter implements TextPainter {
+class NoColorsTextPainter implements LogecomTextPainter {
   const NoColorsTextPainter();
 
   @override
@@ -42,7 +42,7 @@ class NoColorsTextPainter implements TextPainter {
 }
 
 /// Used together with stdOut or stdErr printing methods
-class StdOutPainter implements TextPainter {
+class StdOutPainter implements LogecomTextPainter {
   @override
   String black(String s) => '\x1B[30m$s\x1B[0m';
 
@@ -72,7 +72,7 @@ class StdOutPainter implements TextPainter {
 }
 
 /// Used together with "print" printing method
-class UtfPainter implements TextPainter {
+class UtfPainter implements LogecomTextPainter {
   const UtfPainter();
 
   @override

@@ -26,4 +26,8 @@
 
 * [^] Better ConsoleTransport configuration API
 * [^] Use [print] method by default together with colors formatting based on UTF char codes
-* [+] Usage example 
+* [+] Usage example
+
+## 0.0.8
+
+* [^] Include text painter into umbrella file

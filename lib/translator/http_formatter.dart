@@ -20,7 +20,7 @@ import 'package:logecom/translator/string_mapper.dart';
 ///    `Authorization` header.
 class HttpFormatter implements LogTranslator {
   HttpFormatter({
-    TextPainter textPainter = const UtfPainter(),
+    LogecomTextPainter textPainter = const UtfPainter(),
     this.printRpcContent = false,
     this.hideAuthData = true,
   }) {

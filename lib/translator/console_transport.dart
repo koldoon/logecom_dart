@@ -46,7 +46,7 @@ class ConsoleTransport implements LogTranslator {
   }
 
   final bool diffTime;
-  final TextPainter textPainter;
+  final LogecomTextPainter textPainter;
   final bool alignMessages;
   final int initialAlignmentValue;
   final String timestampFormat;
