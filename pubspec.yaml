@@ -1,6 +1,6 @@
 name: logecom
 description: Simple yet powerful logger and middleware-based logging pipeline.
-version: 0.0.8
+version: 0.0.9
 homepage: https://github.com/koldoon/logecom-dart
 
 environment:
