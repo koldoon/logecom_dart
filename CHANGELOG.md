@@ -35,3 +35,7 @@
 ## 0.0.9
 
 * [^] Update dependencies versions
+
+## 0.0.10
+
+* [^] Loosen dependencies
