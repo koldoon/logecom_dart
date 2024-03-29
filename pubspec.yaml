@@ -4,12 +4,12 @@ version: 0.0.9
 homepage: https://github.com/koldoon/logecom-dart
 
 environment:
-  sdk: '>=2.13.0 <3.0.0'
+  sdk: '>=2.13.0 <4.0.0'
 
 dependencies:
-  intl: ^0.18.1
+  intl: any
   duration: ^3.0.13
 
 dev_dependencies:
-  dartdoc:
+  dartdoc: any
   lints: ^3.0.0
